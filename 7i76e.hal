@@ -1,0 +1,76 @@
+# HAL Pins of the 7i76e MESA CARD 
+# custom configuration for CC_F-100
+
+#*******************************************************************
+# setup analog inputs used for joystick of pendant
+#*******************************************************************
+# scaling analog inputs
+# default max = 36,3V
+# currVoltage = 24V 
+# maxValue = 2 (+-1)
+# scalemax = maxValue / (currVoltage / 36,3)
+
+setp hm2_7i76e.0.7i76.0.0.analogin3-scalemax 3.025
+setp hm2_7i76e.0.7i76.0.0.analogin2-scalemax 3.025
+setp hm2_7i76e.0.7i76.0.0.analogin1-scalemax -3.025
+
+net analogInX <= hm2_7i76e.0.7i76.0.0.analogin1
+net analogInY <= hm2_7i76e.0.7i76.0.0.analogin2
+net analogInZ <= hm2_7i76e.0.7i76.0.0.analogin3
+
+#*******************************************************************
+# setup encoder of pendant
+#*******************************************************************
+setp hm2_7i76e.0.encoder.00.counter-mode 1
+setp hm2_7i76e.0.encoder.00.scale -1
+
+net encPpos <= hm2_7i76e.0.encoder.00.position
+#net encPcount
+net fo-count <= hm2_7i76e.0.encoder.00.count
+
+net modeChanged => hm2_7i76e.0.encoder.00.reset
+
+#*******************************************************************
+# setup buttons of pendant
+#*******************************************************************
+net joyButton <= hm2_7i76e.0.7i76.0.0.input-04
+net redButton <= hm2_7i76e.0.7i76.0.0.input-06
+net greenButton <= hm2_7i76e.0.7i76.0.0.input-05
+net modeAuto => hm2_7i76e.0.7i76.0.0.output-07 #redButtonLed
+net modeMan => hm2_7i76e.0.7i76.0.0.output-06 #greenButtonLed
+
+#*******************************************************************
+# setup main machine
+#*******************************************************************
+# switch on drivers
+net machine-is-on => hm2_7i76e.0.7i76.0.0.output-08 #stdnet
+# drivers return ready
+net machine-is-ready <= hm2_7i76e.0.7i76.0.0.input-07
+net machine-is-not-ready <= hm2_7i76e.0.7i76.0.0.input-07-not
+
+#*******************************************************************
+# setup flood
+#*******************************************************************
+net coolant-flood => hm2_7i76e.0.7i76.0.0.output-03
+
+#*******************************************************************
+# setup limit switches (stdnets by configurator)
+#*******************************************************************
+net x-home-sw <= hm2_7i76e.0.7i76.0.0.input-09
+net x-neg-limit <= hm2_7i76e.0.7i76.0.0.input-12
+net y-home-sw <= hm2_7i76e.0.7i76.0.0.input-10
+net y-neg-limit <= hm2_7i76e.0.7i76.0.0.input-13  
+net z-home-sw <= hm2_7i76e.0.7i76.0.0.input-11
+
+#*******************************************************************
+# setup spindel
+#*******************************************************************
+setp	hm2_7i76e.0.7i76.0.0.spinout-maxlim 7500
+setp	hm2_7i76e.0.7i76.0.0.spinout-minlim 0
+setp	hm2_7i76e.0.7i76.0.0.spinout-scalemax 7500
+
+net spindle-vel-cmd-rpm-abs => hm2_7i76e.0.7i76.0.0.spinout #stdnet
+net spindle-enable => hm2_7i76e.0.7i76.0.0.spinena #stdnet
+net spindle-ccw => hm2_7i76e.0.7i76.0.0.spindir #stdnet
+
+

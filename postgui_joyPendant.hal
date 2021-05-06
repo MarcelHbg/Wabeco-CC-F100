@@ -1,0 +1,6 @@
+# postgui call to connect agmoccapyui with pendant
+
+#*******************************************************************
+# setup jogging for pendant encoder by GUI
+#*******************************************************************
+net encIncIn <= gmoccapy.jog.jog-increment # get increment

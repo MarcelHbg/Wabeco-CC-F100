@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-requires gladevcp 0.0 -->
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window1">
+    <property name="width_request">120</property>
+    <property name="can_focus">False</property>
+    <property name="default_width">100</property>
+    <property name="default_height">725</property>
+    <child>
+      <object class="GtkVButtonBox" id="vbuttonbox1">
+        <property name="width_request">120</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="homogeneous">True</property>
+        <child>
+          <object class="HAL_LightButton" id="v_button0">
+            <property name="width_request">100</property>
+            <property name="height_request">150</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="button_text" translatable="yes">X</property>
+            <property name="corner_radius">2</property>
+            <property name="font_off_color">#000000000000</property>
+            <property name="font_on_color">#000000000000</property>
+            <property name="font_size">20</property>
+            <property name="light_off_color">#808080808080</property>
+            <property name="light_on_color">#0000ffff0000</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_LightButton" id="v_button1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="button_text" translatable="yes">Y</property>
+            <property name="corner_radius">2</property>
+            <property name="font_off_color">#000000000000</property>
+            <property name="font_on_color">#000000000000</property>
+            <property name="font_size">20</property>
+            <property name="light_off_color">#808080808080</property>
+            <property name="light_on_color">#0000ffff0000</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_LightButton" id="v_button2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="button_text" translatable="yes">Z</property>
+            <property name="corner_radius">2</property>
+            <property name="font_off_color">#000000000000</property>
+            <property name="font_on_color">#000000000000</property>
+            <property name="font_size">20</property>
+            <property name="light_off_color">#808080808080</property>
+            <property name="light_on_color">#0000ffff0000</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_LightButton" id="v_button3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="button_text" translatable="yes">C</property>
+            <property name="corner_radius">2</property>
+            <property name="font_off_color">#000000000000</property>
+            <property name="font_on_color">#000000000000</property>
+            <property name="font_size">20</property>
+            <property name="light_off_color">#808080808080</property>
+            <property name="light_on_color">#0000ffff0000</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

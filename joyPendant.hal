@@ -1,0 +1,180 @@
+# joyPendat implementation
+# by Marcel Herzberg
+#*******************************************************************
+# enable Pendant
+#*******************************************************************
+net machine-is-on => and2.0.in1 #stdnet
+net modeMan => and2.0.in0 <= halui.mode.is-manual
+net modeAuto => mdiORauto.in0 <= halui.mode.is-auto
+net modeMDI => mdiORauto.in1 <= halui.mode.is-mdi
+
+net enaPover <= mdiORauto.out
+net enaPjog <= and2.0.out
+
+# change mode pos edge of enable override
+setp edge.3.in-edge 0
+setp edge.3.out-width-ns 50000000
+
+net enaPover => edge.3.in
+net modeChanged => notMChange.in xor2.0.in0 xor2.1.in0 xor2.2.in0 <= edge.3.out
+net modeChangedInv => <= notMChange.out 
+
+#*******************************************************************
+# get velocity value for joystick
+# multiply by 60 to convert from mm/min  to mm/s
+#*******************************************************************
+setp mux2.4.in0 500
+setp mux2.4.in1 3000
+net joyButton => mux2.4.sel
+net jog-speed <= mux2.4.out #stdnet
+
+
+#*******************************************************************
+# jog axis with joystick
+#*******************************************************************
+setp halui.axis.jog-deadband 0.1
+
+# mux as enable joystick
+net enaPjog => mux2.0.sel mux2.1.sel mux2.2.sel
+setp mux2.0.in0 0
+setp mux2.1.in0 0
+setp mux2.2.in0 0
+
+# set offset for joystick inputs
+# result = 0 to +-1 
+# offset = analog value in mid position
+setp offset.0.offset -1
+setp offset.1.offset 0.8
+setp offset.2.offset 0.8
+
+net analogInX => offset.0.fb-in
+net analogInY => offset.1.fb-in 
+net analogInZ => offset.2.fb-in 
+
+# -- X achse --
+net Xanalog => mux2.0.in1 <= offset.0.fb-out 
+net jog-x-analog <= mux2.0.out #stdnet
+
+# -- Y achse --
+net Yanalog => mux2.1.in1 <= offset.1.fb-out 
+net jog-y-analog <= mux2.1.out #stdnet
+
+# -- Z achse --
+net Zanalog => mux2.2.in1 <= offset.2.fb-out 
+net jog-z-analog <= mux2.2.out #stdnet
+
+#*******************************************************************
+# select axis with Joystick
+#*******************************************************************
+setp compXjoy.in0 0.1
+setp compYjoy.in0 0.1
+setp compZjoy.in0 0.1
+
+net jog-x-analog => compXjoy.in1
+net jog-y-analog => compYjoy.in1
+net jog-z-analog => compZjoy.in1
+
+net orSelIn11 => XguiORjoy.in1 <= compXjoy.out
+net orSelIn12 => YguiORjoy.in1 <= compYjoy.out
+net orSelIn13 => ZguiORjoy.in1 <= compZjoy.out
+
+# axis selection by GUI in post gui
+# final selection
+net axis-select-x <= XguiORjoy.out #stdnet
+net axis-select-y <= YguiORjoy.out #stdnet
+net axis-select-z <= ZguiORjoy.out #stdnet
+
+#*******************************************************************
+# selected axis
+#*******************************************************************
+net axisSelConv => conv-u32-s32.0.in <= halui.axis.selected
+net axisSelInt => select8.0.sel <= conv-u32-s32.0.out
+
+net axisSelX => xor2.0.in1 and2.1.in0 <= halui.axis.x.is-selected
+net axisSelXmux => and2.1.in1 <= xor2.0.out 
+net axisSelXena => axis.x.jog-enable <= and2.1.out
+
+net axisSelY => xor2.1.in1 and2.2.in0 <= halui.axis.y.is-selected
+net axisSelYmux => and2.2.in1 <= xor2.1.out 
+net axisSelYena => axis.y.jog-enable <= and2.2.out
+
+net axisSelZ => xor2.2.in1 and2.3.in0 <= halui.axis.z.is-selected
+net axisSelZmux => and2.3.in1 <= xor2.2.out 
+net axisSelZena => axis.z.jog-enable <= and2.3.out
+
+net axisSelC => <= halui.axis.a.is-selected
+#*******************************************************************
+# touch off selcted axis with pendant
+#*******************************************************************
+net touchOff => select8.0.enable
+net touchX => halui.mdi-command-00 <= select8.0.out0
+net touchY => halui.mdi-command-01 <= select8.0.out1
+net touchZ => halui.mdi-command-02 <= select8.0.out2
+
+#*******************************************************************
+# connect encoder to axis or override
+#*******************************************************************
+# jogging #conv todo
+net encPpos => conv-float-s32.0.in
+net encPposS32 <= conv-float-s32.0.out
+net encPposS32 => axis.x.jog-counts axis.y.jog-counts axis.z.jog-counts
+
+# maxVel
+net enaPjog => mux-gen.00.sel-bit-00 halui.max-velocity.direct-value
+
+setp mux-gen.00.in-float-01 3000
+
+net encPpos => mux-gen.00.in-float-00
+
+net max-velocity => halui.max-velocity.counts <= mux-gen.00.out-s32
+
+#*******************************************************************
+# selection of axis by GUI
+#*******************************************************************
+setp edge.0.in-edge FALSE
+setp edge.1.in-edge FALSE
+setp edge.2.in-edge FALSE
+
+setp edge.0.out-width-ns 500000000
+setp edge.1.out-width-ns 500000000
+setp edge.2.out-width-ns 500000000
+
+net guiX => edge.0.in
+net guiY => edge.1.in
+net guiZ => edge.2.in
+
+net orSelIn01 => XguiORjoy.in0 <= edge.0.out
+net orSelIn02 => YguiORjoy.in0 <= edge.1.out
+net orSelIn03 => ZguiORjoy.in0 <= edge.2.out
+
+#*******************************************************************
+# setup jogging for pendant encoder by GUI
+#*******************************************************************
+setp nearEncInc.in1 0
+setp nearEncInc.difference 0.001
+setp mux2.3.in1 0.002 # default value if "axisui.jog.increment" = 0
+
+net encIncIn => nearEncInc.in2 mux2.3.in0 # get increment
+net encIncSel => mux2.3.sel <= nearEncInc.out
+net encInc => axis.x.jog-scale axis.y.jog-scale axis.z.jog-scale <= mux2.3.out
+
+#*******************************************************************
+# setup buttons
+#*******************************************************************
+# green Button
+net progIsPaused => tdProgPaused.in <= halui.program.is-paused
+setp tdProgPaused.on-delay 2
+setp tdProgPaused.off-delay 2
+
+net modeAuto => dmGreenButton.sel-bit-00
+net greenButton => dmGreenButton.sel-bit-01
+net progPausedDelay => dmGreenButton.sel-bit-02 <= tdProgPaused.out
+net buttonStartProg => halui.program.run <= dmGreenButton.out-02
+net buttonPauseProg => halui.program.pause <= dmGreenButton.out-03
+net buttonResumeProg => halui.program.resume <= dmGreenButton.out-07
+
+# red Button
+net modeAuto => dmRedButton.sel-bit-00
+net redButton => dmRedButton.sel-bit-01
+net buttonStopProg => halui.program.stop <= dmRedButton.out-03
+net touchOff <= dmRedButton.out-02

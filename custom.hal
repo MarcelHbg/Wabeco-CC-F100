@@ -1,0 +1,16 @@
+# Include your custom HAL commands here
+# This file will not be overwritten when you run PNCconf again
+
+#*******************************************************************
+# custom machine settings
+#*******************************************************************
+
+net machine-is-on 			=> notMachineIsOn.in
+net machine-is-off			<= notMachineIsOn.out
+net machine-is-off			=> halui.joint.3.unhome
+net machine-is-off			=> halui.joint.2.unhome
+net machine-is-off			=> halui.joint.1.unhome
+net machine-is-off			=> halui.joint.0.unhome
+
+setp driverfail.edge false
+net machine-is-not-ready		=> driverfail.trigger

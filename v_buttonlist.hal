@@ -1,0 +1,21 @@
+#*******************************************************************
+# selection of axis by GUI
+#*******************************************************************
+net guiX <= v_buttonlist.v_button0-button
+net guiY <= v_buttonlist.v_button1-button
+net guiZ <= v_buttonlist.v_button2-button
+net guiC <= v_buttonlist.v_button3-button
+
+net axisSelX => v_buttonlist.v_button0-button
+net axisSelY => v_buttonlist.v_button1-button
+net axisSelZ => v_buttonlist.v_button2-button
+net axisSelC => v_buttonlist.v_button3-button
+
+#*******************************************************************
+# feedback of selection
+#*******************************************************************
+
+net axisSelX => v_buttonlist.v_button0-light
+net axisSelY => v_buttonlist.v_button1-light
+net axisSelZ => v_buttonlist.v_button2-light
+net axisSelC => v_buttonlist.v_button3-light
