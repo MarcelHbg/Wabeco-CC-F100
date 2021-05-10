@@ -1,4 +1,4 @@
-# Erstellt von PNCconf am Wed May  5 12:31:45 2021
+# Erstellt von PNCconf am Sun May  9 18:25:02 2021
 # Using LinuxCNC version:  2.8
 # Änderungen an dieser Datei werden beim nächsten
 # overwritten when you run PNCconf again
@@ -85,8 +85,8 @@ net x-enable     => hm2_7i76e.0.stepgen.00.enable
 # ---setup home / limit switch signals---
 
 net x-home-sw     =>  joint.0.home-sw-in
-net x-neg-limit     =>  joint.0.neg-lim-sw-in joint.0.pos-lim-sw-in
-#net x-pos-limit     =>  
+net x-neg-limit     =>  joint.0.neg-lim-sw-in
+net x-pos-limit     =>  joint.0.pos-lim-sw-in
 
 #*******************
 #  AXIS Y JOINT 1
@@ -137,9 +137,9 @@ net y-enable     => hm2_7i76e.0.stepgen.01.enable
 
 # ---setup home / limit switch signals---
 
-net y-home-sw     =>  joint.1.home-sw-in joint.1.pos-lim-sw-in
+net y-home-sw     =>  joint.1.home-sw-in
 net y-neg-limit     =>  joint.1.neg-lim-sw-in
-#net y-pos-limit     =>  
+net y-pos-limit     =>  joint.1.pos-lim-sw-in
 
 #*******************
 #  AXIS Z JOINT 2
@@ -190,9 +190,9 @@ net z-enable     => hm2_7i76e.0.stepgen.02.enable
 
 # ---setup home / limit switch signals---
 
-net z-home-sw     =>  joint.2.home-sw-in joint.2.pos-lim-sw-in
+net z-home-sw     =>  joint.2.home-sw-in
 net z-neg-limit     =>  joint.2.neg-lim-sw-in
-#net z-pos-limit     =>  
+net z-pos-limit     =>  joint.2.pos-lim-sw-in
 
 #*******************
 #  AXIS A JOINT 3
@@ -336,37 +336,14 @@ sets selected-jog-incr     0.000000
 
 # ---feed override signals to mesa encoder - mpg---
 
+net fo-count     <=  hm2_7i76e.0.encoder.00.count
 
-# connect feed overide increments - switches
+# connect feed overide increments - MPG
 
-    setp halui.feed-override.count-enable true
-    setp halui.feed-override.direct-value true
+    setp halui.feed-override.direct-value false
     setp halui.feed-override.scale .01
-net feedoverride-incr   =>  halui.feed-override.counts
-net fo-incr-a           =>  foincr.sel0
-net fo-incr-b           =>  foincr.sel1
-net fo-incr-c           =>  foincr.sel2
-net fo-incr-d           =>  foincr.sel3
-net feedoverride-incr   <=  foincr.out-s
-    setp foincr.debounce-time      0.200000
-    setp foincr.use-graycode      False
-    setp foincr.suppress-no-input False
-    setp foincr.in00          0.000000
-    setp foincr.in01          5.000000
-    setp foincr.in02          10.000000
-    setp foincr.in03          25.000000
-    setp foincr.in04          50.000000
-    setp foincr.in05          75.000000
-    setp foincr.in06          90.000000
-    setp foincr.in07          100.000000
-    setp foincr.in08          110.000000
-    setp foincr.in09          125.000000
-    setp foincr.in10          100.000000
-    setp foincr.in11          150.000000
-    setp foincr.in12          165.000000
-    setp foincr.in13          180.000000
-    setp foincr.in14          190.000000
-    setp foincr.in15          200.000000
+    setp halui.feed-override.count-enable true
+net fo-count            =>  halui.feed-override.counts
 
 #  ---motion control signals---
 
