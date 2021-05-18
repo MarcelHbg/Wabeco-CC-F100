@@ -1,0 +1,4 @@
+# HAL Connection of Progress TAB
+
+#setp progress.prog-progress.scale 0.001
+net programm-progress => progress.prog-progress <= gmoccapy.program.progress

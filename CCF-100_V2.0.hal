@@ -1,4 +1,4 @@
-# Erstellt von PNCconf am Sun May  9 18:25:02 2021
+# Erstellt von PNCconf am Wed May  5 12:31:45 2021
 # Using LinuxCNC version:  2.8
 # Änderungen an dieser Datei werden beim nächsten
 # overwritten when you run PNCconf again
@@ -6,7 +6,7 @@
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 loadrt hostmot2
-loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=1 num_pwmgens=0 num_stepgens=5 sserial_port_0=00xxxx" 
+loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=1 num_pwmgens=0 num_stepgens=5 sserial_port_0=10xxxx" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.z,pid.a,pid.s
 loadrt abs names=abs.spindle
@@ -85,8 +85,8 @@ net x-enable     => hm2_7i76e.0.stepgen.00.enable
 # ---setup home / limit switch signals---
 
 net x-home-sw     =>  joint.0.home-sw-in
-net x-neg-limit     =>  joint.0.neg-lim-sw-in
-net x-pos-limit     =>  joint.0.pos-lim-sw-in
+net x-neg-limit     =>  joint.0.neg-lim-sw-in joint.0.pos-lim-sw-in
+#net x-pos-limit     =>  
 
 #*******************
 #  AXIS Y JOINT 1
@@ -137,9 +137,9 @@ net y-enable     => hm2_7i76e.0.stepgen.01.enable
 
 # ---setup home / limit switch signals---
 
-net y-home-sw     =>  joint.1.home-sw-in
+net y-home-sw     =>  joint.1.home-sw-in joint.1.pos-lim-sw-in
 net y-neg-limit     =>  joint.1.neg-lim-sw-in
-net y-pos-limit     =>  joint.1.pos-lim-sw-in
+#net y-pos-limit     =>  
 
 #*******************
 #  AXIS Z JOINT 2
@@ -190,9 +190,9 @@ net z-enable     => hm2_7i76e.0.stepgen.02.enable
 
 # ---setup home / limit switch signals---
 
-net z-home-sw     =>  joint.2.home-sw-in
+net z-home-sw     =>  joint.2.home-sw-in joint.2.pos-lim-sw-in
 net z-neg-limit     =>  joint.2.neg-lim-sw-in
-net z-pos-limit     =>  joint.2.pos-lim-sw-in
+#net z-pos-limit     =>  
 
 #*******************
 #  AXIS A JOINT 3
@@ -332,18 +332,6 @@ net coolant-flood     <=  iocontrol.0.coolant-flood
 
 net probe-in     =>  motion.probe-input
 
-sets selected-jog-incr     0.000000
-
-# ---feed override signals to mesa encoder - mpg---
-
-net fo-count     <=  hm2_7i76e.0.encoder.00.count
-
-# connect feed overide increments - MPG
-
-    setp halui.feed-override.direct-value false
-    setp halui.feed-override.scale .01
-    setp halui.feed-override.count-enable true
-net fo-count            =>  halui.feed-override.counts
 
 #  ---motion control signals---
 
@@ -354,7 +342,7 @@ net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---estop signals---
 
-net estop-out     <=  iocontrol.0.user-enable-out
+#net estop-out     <=  iocontrol.0.user-enable-out
 net estop-out     =>  iocontrol.0.emc-enable-in
 
 #  ---manual tool change signals---

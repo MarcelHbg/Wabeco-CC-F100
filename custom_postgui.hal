@@ -1,2 +1,14 @@
 # Include your custom_postgui HAL commands here
 # This file will not be overwritten when you run PNCconf again
+
+#*******************************************************************
+# custom machine feed override poti
+#*******************************************************************
+setp gmoccapy.feed.feed-override.analog-enable true
+setp gmoccapy.rapid.rapid-override.analog-enable true
+
+net poti-feedor => gmoccapy.feed.feed-override.direct-value
+net poti-feedor => half-feed-poti.in0
+setp half-feed-poti.in1 2
+net rapidor <= half-feed-poti.out
+net rapidor => gmoccapy.rapid.rapid-override.direct-value

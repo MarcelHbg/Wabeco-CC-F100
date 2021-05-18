@@ -1,60 +1,48 @@
 #*******************************************************************
 # used components
 #*******************************************************************
-loadrt message names=driverfail messages="Treiber Fehler!"
-
-loadrt mux2 count=5
-loadrt and2 count=4
-loadrt near names="nearEncInc"
-loadrt comp names="compXjoy,compYjoy,compZjoy"
-loadrt not names="notMachineIsOn,notMChange"
+loadrt mux2 names="muxJoyspeed,muxJogInc"
+loadrt and2 names="andWZlösen,andSpinStat"
+loadrt near names="nearEncInc,nearJoyselectX,nearJoyselectY,nearJoyselectZ"
+loadrt not names="notMachineIsOn"
 loadrt offset count=3
 loadrt select8 count=1
-loadrt or2 names="mdiORauto,XguiORjoy,YguiORjoy,ZguiORjoy"
-loadrt edge count=4
+loadrt or2 names="XguiORjoy,YguiORjoy,ZguiORjoy"
 loadrt conv_u32_s32 count=1
 loadrt conv_float_s32 count=1
-loadrt mux_generic config="fs4"
-loadrt xor2 count=3
-loadrt demux names="dmRedButton,dmGreenButton"
 loadrt timedelay names="tdProgPaused"
+loadrt mult2 names="half-feed-poti"
+loadrt logic names="b-start-prog" personality="0x103"
 
-addf driverfail servo-thread
-
-addf mux2.0 servo-thread
-addf mux2.1 servo-thread
-addf mux2.2 servo-thread
-addf mux2.3 servo-thread
-addf mux2.4 servo-thread
-addf mux-gen.00 servo-thread #resetOverride
-addf and2.0 servo-thread #enablePjogging
-addf and2.1 servo-thread
-addf and2.2 servo-thread
-addf and2.3 servo-thread
+#*******************************************************************
+# joyPendant.hal
+#*******************************************************************
+addf muxJoyspeed servo-thread
+addf muxJogInc servo-thread
 addf nearEncInc servo-thread
-addf compXjoy servo-thread
-addf compYjoy servo-thread
-addf compZjoy servo-thread
-addf notMachineIsOn servo-thread
-addf notMChange servo-thread
+addf nearJoyselectX servo-thread
+addf nearJoyselectY servo-thread
+addf nearJoyselectZ servo-thread
 addf offset.0.update-feedback servo-thread
 addf offset.1.update-feedback servo-thread
 addf offset.2.update-feedback servo-thread
 addf select8.0 servo-thread
-addf mdiORauto servo-thread
 addf XguiORjoy servo-thread
 addf YguiORjoy servo-thread
 addf ZguiORjoy servo-thread
-addf edge.0 servo-thread
-addf edge.1 servo-thread
-addf edge.2 servo-thread
-addf edge.3 servo-thread
 addf conv-u32-s32.0 servo-thread
 addf conv-float-s32.0 servo-thread
-addf xor2.0 servo-thread
-addf xor2.1 servo-thread
-addf xor2.2 servo-thread
-addf dmRedButton servo-thread
-addf dmGreenButton servo-thread
 addf tdProgPaused servo-thread
+addf b-start-prog servo-thread
 
+#*******************************************************************
+# custom.hal
+#*******************************************************************
+addf notMachineIsOn servo-thread
+addf andWZlösen servo-thread
+addf andSpinStat servo-thread
+
+#*******************************************************************
+# custom_postgui.hal
+#*******************************************************************
+addf half-feed-poti servo-thread

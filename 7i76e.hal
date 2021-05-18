@@ -25,10 +25,7 @@ setp hm2_7i76e.0.encoder.00.counter-mode 1
 setp hm2_7i76e.0.encoder.00.scale -1
 
 net encPpos <= hm2_7i76e.0.encoder.00.position
-#net encPcount
-net fo-count <= hm2_7i76e.0.encoder.00.count
-
-net modeChanged => hm2_7i76e.0.encoder.00.reset
+net encPcount <= hm2_7i76e.0.encoder.00.count
 
 #*******************************************************************
 # setup buttons of pendant
@@ -36,8 +33,8 @@ net modeChanged => hm2_7i76e.0.encoder.00.reset
 net joyButton <= hm2_7i76e.0.7i76.0.0.input-04
 net redButton <= hm2_7i76e.0.7i76.0.0.input-06
 net greenButton <= hm2_7i76e.0.7i76.0.0.input-05
-net modeAuto => hm2_7i76e.0.7i76.0.0.output-07 #redButtonLed
-net modeMan => hm2_7i76e.0.7i76.0.0.output-06 #greenButtonLed
+net redLED => hm2_7i76e.0.7i76.0.0.output-07 #redButtonLed
+net greenLED => hm2_7i76e.0.7i76.0.0.output-06 #greenButtonLed
 
 #*******************************************************************
 # setup main machine
@@ -47,6 +44,20 @@ net machine-is-on => hm2_7i76e.0.7i76.0.0.output-08 #stdnet
 # drivers return ready
 net machine-is-ready <= hm2_7i76e.0.7i76.0.0.input-07
 net machine-is-not-ready <= hm2_7i76e.0.7i76.0.0.input-07-not
+
+#*******************************************************************
+# setup Türpanel
+#*******************************************************************
+net estop-out <= hm2_7i76e.0.7i76.0.0.input-14-not
+
+net spindel-status-in <= hm2_7i76e.0.7i76.0.0.input-15-not
+net spindel-status-out => hm2_7i76e.0.7i76.0.0.output-00 
+
+net wz-lösen-in <= hm2_7i76e.0.7i76.0.0.input-08
+net wz-lösen-out => hm2_7i76e.0.7i76.0.0.output-04
+
+setp hm2_7i76e.0.7i76.0.0.analogin0-scalemax 1.5125
+net poti-feedor <= hm2_7i76e.0.7i76.0.0.analogin0
 
 #*******************************************************************
 # setup flood
