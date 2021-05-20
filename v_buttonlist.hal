@@ -1,3 +1,14 @@
+# Gladevcp made by MarcelHbg
+# 
+# buttonlist to select diffrent axis
+# needed for joyPendant jogging with encoder
+# + driver status feedback led
+
+#*******************************************************************
+# show C axis button (set true if no C axis exists)
+#*******************************************************************
+setp v_buttonlist.hide_C_axis false
+
 #*******************************************************************
 # selection of axis by GUI
 #*******************************************************************
@@ -13,3 +24,9 @@ net axisSelX => v_buttonlist.v_button0-light
 net axisSelY => v_buttonlist.v_button1-light
 net axisSelZ => v_buttonlist.v_button2-light
 net axisSelC => v_buttonlist.v_button3-light
+
+#*******************************************************************
+# stepper driver status
+#*******************************************************************
+net driver_stat => v_buttonlist.treiber_stat_led
+setp v_buttonlist.hide_treiber_stat false
