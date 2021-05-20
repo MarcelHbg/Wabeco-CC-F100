@@ -7,12 +7,12 @@ loadrt near names="nearEncInc,nearJoyselectX,nearJoyselectY,nearJoyselectZ"
 loadrt not names="notMachineIsOn"
 loadrt offset count=3
 loadrt select8 count=1
-loadrt or2 names="XguiORjoy,YguiORjoy,ZguiORjoy"
+loadrt or2 names="XguiORjoy, YguiORjoy, ZguiORjoy, or_auto_mdi, or_run_prog"
 loadrt conv_u32_s32 count=1
 loadrt conv_float_s32 count=1
 loadrt timedelay names="tdProgPaused"
 loadrt mult2 names="half-feed-poti"
-loadrt logic names="b-start-prog" personality="0x103"
+loadrt demux names="dm_red_button, dm_green_button"
 
 #*******************************************************************
 # joyPendant.hal
@@ -33,7 +33,10 @@ addf ZguiORjoy servo-thread
 addf conv-u32-s32.0 servo-thread
 addf conv-float-s32.0 servo-thread
 addf tdProgPaused servo-thread
-addf b-start-prog servo-thread
+addf or_auto_mdi servo-thread
+addf dm_red_button servo-thread
+addf dm_green_button servo-thread
+addf or_run_prog servo-thread
 
 #*******************************************************************
 # custom.hal

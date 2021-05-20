@@ -3,8 +3,12 @@
 #*******************************************************************
 # modes
 #*******************************************************************
-net modeMan <= halui.mode.is-manual
-net modeAuto <= halui.mode.is-auto
+net mode_teleop <= halui.mode.is-teleop
+net mode_auto <= halui.mode.is-auto => or_auto_mdi.in0
+net mode_joint <= halui.mode.is-joint
+net MDI_mode => or_auto_mdi.in1 #stdnet
+
+net mode_auto_mdi <= or_auto_mdi.out
 
 #*******************************************************************
 # change max velocity for joystick by joystick button
@@ -118,24 +122,28 @@ net encInc => axis.x.jog-scale axis.y.jog-scale axis.z.jog-scale axis.a.jog-scal
 net progIsPaused => tdProgPaused.in <= halui.program.is-paused
 setp tdProgPaused.on-delay 2
 setp tdProgPaused.off-delay 0
-net progPausedDelay <= tdProgPaused.out
+net prog_is_paused_delay <= tdProgPaused.out
 
 
-net greenButton => b-start-prog.in-00
-net modeAuto => b-start-prog.in-01
-net machine-is-on => b-start-prog.in-02
+net greenButton => dm_green_button.sel-bit-00
+net mode_auto_mdi => dm_green_button.sel-bit-01
+net mode_teleop => dm_green_button.sel-bit-02
+net prog_is_paused_delay => dm_green_button.sel-bit-03
+net prog_is_idle => dm_green_button.sel-bit-04
 
+net run_prog_teleop => or_run_prog.in0 <= dm_green_button.out-21 # 10101
+net run_prog_auto => or_run_prog.in1 <= dm_green_button.out-19 # 10011
 
-net buttonStartProg => halui.program.run <= b-start-prog.and		
-net buttonPauseProg => halui.program.pause <= 
-
+net button_start_prog => halui.program.run <= or_run_prog.out	
+net button_pause_prog => halui.program.pause <= dm_green_button.out-03 # 00011
+net button_resume_prog => halui.program.resume <= dm_green_button.out-11 # 01011
 
 # red Button
-#net greenButton => dmRedButton.sel-bit-00
-#net modeAuto => dmRedButton.sel-bit-01
-#net modeMan => dmRedButton.sel-bit-02
-#net MDI-mode => dmRedButton.sel-bit-03
-#net machine-is-on => dmRedButton.sel-bit-04
+net redButton => dm_red_button.sel-bit-00
+net mode_auto_mdi => dm_red_button.sel-bit-01
+net mode_teleop => dm_red_button.sel-bit-02
+net mode_joint => dm_red_button.sel-bit-03
 
-#net buttonStopProg => halui.program.stop <= dmRedButton.out-03
-#net touchOff <= dmRedButton.out-02
+net stop_prog => halui.program.stop <= dm_red_button.out-03
+net touchOff <= dm_red_button.out-05
+net home_all => halui.home-all <= dm_red_button.out-09
