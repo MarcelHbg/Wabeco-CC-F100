@@ -21,7 +21,7 @@ net jog-speed <= muxJoyspeed.out #stdnet
 #*******************************************************************
 # jog axis with joystick
 #*******************************************************************
-setp halui.axis.jog-deadband 0.1
+setp halui.axis.jog-deadband 0.15
 
 # set offset for joystick inputs
 # result = 0 to +-1 
@@ -50,17 +50,21 @@ setp nearJoyselectX.difference 0.1
 setp nearJoyselectY.difference 0.1
 setp nearJoyselectZ.difference 0.1
 
-setp nearJoyselectX.in1 0
-setp nearJoyselectY.in1 0
-setp nearJoyselectZ.in1 0
+setp nearJoyselectX.in2 0
+setp nearJoyselectY.in2 0
+setp nearJoyselectZ.in2 0
 
-net jog-x-analog => nearJoyselectX.in2
-net jog-y-analog => nearJoyselectY.in2
-net jog-z-analog => nearJoyselectZ.in2
+net inv_sel_joyX => not_sel_joy_x.in <= nearJoyselectX.out
+net inv_sel_joyY => not_sel_joy_y.in <= nearJoyselectY.out
+net inv_sel_joyZ => not_sel_joy_z.in <= nearJoyselectZ.out
 
-net select-by-joyX => XguiORjoy.in1 <= nearJoyselectX.out
-net select-by-joyY => YguiORjoy.in1 <= nearJoyselectY.out
-net select-by-joyZ => ZguiORjoy.in1 <= nearJoyselectZ.out
+net jog-x-analog => nearJoyselectX.in1
+net jog-y-analog => nearJoyselectY.in1
+net jog-z-analog => nearJoyselectZ.in1
+
+net select-by-joyX => XguiORjoy.in1 <= not_sel_joy_x.out
+net select-by-joyY => YguiORjoy.in1 <= not_sel_joy_y.out
+net select-by-joyZ => ZguiORjoy.in1 <= not_sel_joy_z.out
 
 # final selection
 net axis-select-x <= XguiORjoy.out #stdnet
