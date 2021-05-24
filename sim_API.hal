@@ -1,0 +1,87 @@
+# HAL Pins of the 7i76e MESA CARD 
+# custom configuration for CC_F-100
+
+#*******************************************************************
+# setup analog inputs used for joystick of pendant
+#*******************************************************************
+# scaling analog inputs
+# default max = 36,3V
+# currVoltage = 24V 
+# maxValue = 2 (+-1)
+# scalemax = maxValue / (currVoltage / 36,3)
+
+#setp hm2_7i76e.0.7i76.0.0.analogin3-scalemax 3.025
+#setp hm2_7i76e.0.7i76.0.0.analogin2-scalemax 3.025
+#setp hm2_7i76e.0.7i76.0.0.analogin1-scalemax -3.025
+
+net analogInX <= sim_joyPendant.x_poti #hm2_7i76e.0.7i76.0.0.analogin1
+net analogInY <= sim_joyPendant.y_poti #hm2_7i76e.0.7i76.0.0.analogin2
+net analogInZ <= sim_joyPendant.z_poti #hm2_7i76e.0.7i76.0.0.analogin3
+
+#*******************************************************************
+# setup encoder of pendant
+#*******************************************************************
+#setp hm2_7i76e.0.encoder.00.counter-mode 1
+#setp hm2_7i76e.0.encoder.00.scale -1
+
+#net encPpos <= hm2_7i76e.0.encoder.00.position
+net encPcount <= sim_joyPendant.jogwheel1 #hm2_7i76e.0.encoder.00.count
+
+#*******************************************************************
+# setup buttons of pendant
+#*******************************************************************
+#net joyButton <= hm2_7i76e.0.7i76.0.0.input-04
+net redButton <= sim_joyPendant.red_button-button #hm2_7i76e.0.7i76.0.0.input-06
+net greenButton <= sim_joyPendant.green_button-button #hm2_7i76e.0.7i76.0.0.input-05
+net redLED => sim_joyPendant.red_button-light #hm2_7i76e.0.7i76.0.0.output-07 #redButtonLed
+net greenLED => sim_joyPendant.green_button-light #hm2_7i76e.0.7i76.0.0.output-06 #greenButtonLed
+
+#*******************************************************************
+# setup main machine
+#*******************************************************************
+# switch on drivers
+#net machine-is-on => hm2_7i76e.0.7i76.0.0.output-08 #stdnet
+# drivers return ready
+#net driver_stat <= hm2_7i76e.0.7i76.0.0.input-07
+#net machine-is-not-ready <= hm2_7i76e.0.7i76.0.0.input-07-not
+
+#*******************************************************************
+# setup Türpanel
+#*******************************************************************
+#net estop-out <= hm2_7i76e.0.7i76.0.0.input-14-not
+
+#net spindel-status-in <= hm2_7i76e.0.7i76.0.0.input-15-not
+#net spindel-status-out => hm2_7i76e.0.7i76.0.0.output-00 
+
+#net wz-lösen-in <= hm2_7i76e.0.7i76.0.0.input-08
+#net wz-lösen-out => hm2_7i76e.0.7i76.0.0.output-04
+
+#setp hm2_7i76e.0.7i76.0.0.analogin0-scalemax 1.5125
+#net poti-feedor <= hm2_7i76e.0.7i76.0.0.analogin0
+
+#*******************************************************************
+# setup flood
+#*******************************************************************
+#net coolant-flood => hm2_7i76e.0.7i76.0.0.output-03
+
+#*******************************************************************
+# setup limit switches (stdnets by configurator)
+#*******************************************************************
+#net x-home-sw <= hm2_7i76e.0.7i76.0.0.input-09
+#net x-neg-limit <= hm2_7i76e.0.7i76.0.0.input-12
+#net y-home-sw <= hm2_7i76e.0.7i76.0.0.input-10
+#net y-neg-limit <= hm2_7i76e.0.7i76.0.0.input-13  
+#net z-home-sw <= hm2_7i76e.0.7i76.0.0.input-11
+
+#*******************************************************************
+# setup spindel
+#*******************************************************************
+#setp	hm2_7i76e.0.7i76.0.0.spinout-maxlim 7500
+#setp	hm2_7i76e.0.7i76.0.0.spinout-minlim 0
+#setp	hm2_7i76e.0.7i76.0.0.spinout-scalemax 7500
+
+#net spindle-vel-cmd-rpm-abs => hm2_7i76e.0.7i76.0.0.spinout #stdnet
+#net spindle-enable => hm2_7i76e.0.7i76.0.0.spinena #stdnet
+#net spindle-ccw => hm2_7i76e.0.7i76.0.0.spindir #stdnet
+
+

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-requires gladevcp 0.0 -->
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="width_request">300</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">30</property>
+        <child>
+          <object class="HAL_HScale" id="x_poti">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="fill_level">1</property>
+            <property name="round_digits">1</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_HScale" id="y_poti">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="fill_level">1</property>
+            <property name="round_digits">1</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_HScale" id="z_poti">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="fill_level">1</property>
+            <property name="round_digits">1</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">30</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="HAL_LightButton" id="red_button">
+                <property name="width_request">100</property>
+                <property name="height_request">100</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="button_text" translatable="yes">red</property>
+                <property name="font_off_color">#000000000000</property>
+                <property name="font_on_color">#000000000000</property>
+                <property name="is_momentary">True</property>
+                <property name="light_off_color">#808080808080</property>
+                <property name="light_on_color">#ffff00000000</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_LightButton" id="green_button">
+                <property name="width_request">100</property>
+                <property name="height_request">100</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="button_text" translatable="yes">green</property>
+                <property name="font_off_color">#000000000000</property>
+                <property name="font_on_color">#000000000000</property>
+                <property name="is_momentary">True</property>
+                <property name="light_off_color">#808080808080</property>
+                <property name="light_on_color">#0000ffff0000</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="JogWheel" id="jogwheel1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="cpr">100</property>
+            <property name="size">250</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
