@@ -6,7 +6,7 @@
 net mode_teleop <= halui.mode.is-teleop
 net mode_auto <= halui.mode.is-auto => or_auto_mdi.in0
 net mode_joint <= halui.mode.is-joint
-net MDI_mode => or_auto_mdi.in1 #stdnet
+net MDI-mode => or_auto_mdi.in1 #stdnet
 
 net mode_auto_mdi <= or_auto_mdi.out
 
@@ -133,21 +133,42 @@ net greenButton => dm_green_button.sel-bit-00
 net mode_auto_mdi => dm_green_button.sel-bit-01
 net mode_teleop => dm_green_button.sel-bit-02
 net prog_is_paused_delay => dm_green_button.sel-bit-03
-net prog_is_idle => dm_green_button.sel-bit-04
+net prog_is_running => dm_green_button.sel-bit-04 <= halui.program.is-running
 
-net run_prog_teleop => or_run_prog.in0 <= dm_green_button.out-21 # 10101
-net run_prog_auto => or_run_prog.in1 <= dm_green_button.out-19 # 10011
-
+net run_prog_teleop => or_run_prog.in0 <= dm_green_button.out-05 # 00101
+net run_prog_auto => or_run_prog.in1 <= dm_green_button.out-03 # 00011
 net button_start_prog => halui.program.run <= or_run_prog.out	
-net button_pause_prog => halui.program.pause <= dm_green_button.out-03 # 00011
+
+net button_pause_prog => halui.program.pause <= dm_green_button.out-19 # 10011
 net button_resume_prog => halui.program.resume <= dm_green_button.out-11 # 01011
 
 # red Button
-net redButton => dm_red_button.sel-bit-00
+net machine-is-on => and_ena_red_button.in0
+net redButton => and_ena_red_button.in1
+
+net redButton_ena => dm_red_button.sel-bit-00 <= and_ena_red_button.out
 net mode_auto_mdi => dm_red_button.sel-bit-01
 net mode_teleop => dm_red_button.sel-bit-02
 net mode_joint => dm_red_button.sel-bit-03
+net prog_is_running => dm_red_button.sel-bit-04 
 
-net stop_prog => halui.program.stop <= dm_red_button.out-03
-net touchOff <= dm_red_button.out-05
-net home_all => halui.home-all <= dm_red_button.out-09
+net stop_prog => halui.program.stop <= dm_red_button.out-19 # 10011
+net touchOff => <= dm_red_button.out-05 # 00101
+net home_all => halui.home-all <= dm_red_button.out-09 # 01001
+
+#*******************************************************************
+# setup leds
+#*******************************************************************
+setp siggen.0.frequency 1
+net flash => and_flash_home.in0 <= siggen.0.clock
+# green led
+
+
+# red led
+net home_all_ena => and_flash_home.in1 <= dm_red_button.out-08
+net flash_home_ena => or_red_led.in-00 <= and_flash_home.out
+net touchOff_ena => or_red_led.in-01 <= dm_red_button.out-04
+net stop_prog_ena => or_red_led.in-02 <= dm_red_button.out-18 # 10010
+net machine-is-on => and_ena_red_led.in0
+net redLED_ena => and_ena_red_led.in1 <= or_red_led.or
+net redLED <= and_ena_red_led.out
