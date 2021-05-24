@@ -34,6 +34,8 @@
                     <property name="can_focus">False</property>
                     <property name="led_blink_rate">0</property>
                     <property name="led_size">15</property>
+                    <property name="pick_color_off">#ffff00000000</property>
+                    <property name="pick_color_on">#0000ffff0000</property>
                   </object>
                 </child>
                 <child>
