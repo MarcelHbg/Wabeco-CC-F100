@@ -1,7 +1,7 @@
 #*******************************************************************
 # used components
-# for simulation added:
-# near_speed,or2_0
+# ,for_simulation_added:
+# ,near_speed,or2_0
 #*******************************************************************
 loadrt mux2 names="muxJoyspeed,muxJogInc"
 loadrt and2 names="andWZlösen,andSpinStat,and_flash_home,and_ena_red_led,and_ena_red_button"
