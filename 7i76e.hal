@@ -22,9 +22,7 @@ net analogInZ <= hm2_7i76e.0.7i76.0.0.analogin3
 # setup encoder of pendant
 #*******************************************************************
 setp hm2_7i76e.0.encoder.00.counter-mode 1
-setp hm2_7i76e.0.encoder.00.scale -1
 
-net encPpos <= hm2_7i76e.0.encoder.00.position
 net encPcount <= hm2_7i76e.0.encoder.00.count
 
 #*******************************************************************
