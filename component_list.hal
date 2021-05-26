@@ -4,19 +4,18 @@
 # 
 #*******************************************************************
 loadrt mux2 names="muxJoyspeed,muxJogInc"
-loadrt and2 names="andWZlösen,andSpinStat,and_flash_home,and_ena_red_led,and_ena_red_button"
+loadrt and2 names="andWZlösen,andSpinStat,and_flash_red,and_ena_red_led,and_ena_red_button,and_flash_green,and_ena_green_led,and_ena_green_button"
 loadrt near names="nearEncInc,nearJoyselectX,nearJoyselectY,nearJoyselectZ"
 loadrt not names="notMachineIsOn,not_sel_joy_x,not_sel_joy_y,not_sel_joy_z"
 loadrt offset count=3
 loadrt select8 count=1
 loadrt or2 names="XguiORjoy,YguiORjoy,ZguiORjoy,or_auto_mdi,or_run_prog"
 loadrt conv_u32_s32 count=1
-loadrt conv_float_s32 count=1
 loadrt timedelay names="tdProgPaused"
 loadrt mult2 names="half-feed-poti"
 loadrt demux names="dm_red_button,dm_green_button"
 loadrt siggen num_chan=1
-loadrt logic names="or_red_led" personality="0x203"
+loadrt logic names="or_red_led,or_green_led" personality="0x203,0x204"
 
 
 #*******************************************************************
@@ -32,24 +31,27 @@ addf offset.0.update-feedback servo-thread
 addf offset.1.update-feedback servo-thread
 addf offset.2.update-feedback servo-thread
 addf select8.0 servo-thread
-addf not_sel_joy_x servo-thread
-addf not_sel_joy_y servo-thread
-addf not_sel_joy_z servo-thread
+addf not_sel_joy_x base-thread
+addf not_sel_joy_y base-thread
+addf not_sel_joy_z base-thread
 addf XguiORjoy base-thread
 addf YguiORjoy base-thread
 addf ZguiORjoy base-thread
 addf conv-u32-s32.0 servo-thread
-addf conv-float-s32.0 servo-thread
 addf tdProgPaused servo-thread
-addf or_auto_mdi servo-thread
+addf or_auto_mdi base-thread
 addf dm_red_button servo-thread
 addf dm_green_button servo-thread
-addf or_run_prog servo-thread
+addf or_run_prog base-thread
 addf siggen.0.update servo-thread
-addf and_flash_home base-thread
+addf and_flash_red base-thread
+addf and_flash_green base-thread
 addf or_red_led base-thread
+addf or_green_led base-thread
 addf and_ena_red_led base-thread
+addf and_ena_green_led base-thread
 addf and_ena_red_button base-thread
+addf and_ena_green_button base-thread
 
 #*******************************************************************
 # custom.hal

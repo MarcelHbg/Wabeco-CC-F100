@@ -22,9 +22,7 @@ net analogInZ <= sim_joyPendant.z_poti #hm2_7i76e.0.7i76.0.0.analogin3
 # setup encoder of pendant
 #*******************************************************************
 #setp hm2_7i76e.0.encoder.00.counter-mode 1
-#setp hm2_7i76e.0.encoder.00.scale -1
 
-#net encPpos <= hm2_7i76e.0.encoder.00.position
 net encPcount <= sim_joyPendant.jogwheel1 #hm2_7i76e.0.encoder.00.count
 
 #*******************************************************************
@@ -48,16 +46,16 @@ net greenLED => sim_joyPendant.green_button-light #hm2_7i76e.0.7i76.0.0.output-0
 #*******************************************************************
 # setup Türpanel
 #*******************************************************************
-#net estop-out <= hm2_7i76e.0.7i76.0.0.input-14-not
+net estop-out <= sim_tuerpanel.not_aus-not #hm2_7i76e.0.7i76.0.0.input-14-not
 
-#net spindel-status-in <= hm2_7i76e.0.7i76.0.0.input-15-not
-#net spindel-status-out => hm2_7i76e.0.7i76.0.0.output-00 
+net spindel-status-in <= sim_tuerpanel.stat_spin #hm2_7i76e.0.7i76.0.0.input-15-not
+net spindel-status-out => sim_tuerpanel.tc_button-light #hm2_7i76e.0.7i76.0.0.output-00 
 
-#net wz-lösen-in <= hm2_7i76e.0.7i76.0.0.input-08
-#net wz-lösen-out => hm2_7i76e.0.7i76.0.0.output-04
+net wz-lösen-in <= sim_tuerpanel.tc_button-button #hm2_7i76e.0.7i76.0.0.input-08
+net wz-lösen-out => sim_tuerpanel.wz_change #hm2_7i76e.0.7i76.0.0.output-04
 
 #setp hm2_7i76e.0.7i76.0.0.analogin0-scalemax 1.5125
-#net poti-feedor <= hm2_7i76e.0.7i76.0.0.analogin0
+net poti-feedor <= sim_tuerpanel.scale #hm2_7i76e.0.7i76.0.0.analogin0
 
 #*******************************************************************
 # setup flood

@@ -26,9 +26,9 @@ setp halui.axis.jog-deadband 0.15
 # set offset for joystick inputs
 # result = 0 to +-1 
 # offset = analog value in mid position
-setp offset.0.offset -1
-setp offset.1.offset 0.8
-setp offset.2.offset 0.8
+setp offset.0.offset 1
+setp offset.1.offset 1
+setp offset.2.offset 1
 
 net analogInX => offset.0.fb-in
 net analogInY => offset.1.fb-in 
@@ -103,10 +103,7 @@ net touchA => halui.mdi-command-03 <= select8.0.out3
 #*******************************************************************
 # connect encoder to axis
 #*******************************************************************
-# jogging #conv todo
-net encPpos => conv-float-s32.0.in
-net encPposS32 <= conv-float-s32.0.out
-net encPposS32 => axis.x.jog-counts axis.y.jog-counts axis.z.jog-counts axis.a.jog-counts
+net encPcount => axis.x.jog-counts axis.y.jog-counts axis.z.jog-counts axis.a.jog-counts
 
 #*******************************************************************
 # setup jogging for pendant encoder by GUI
@@ -128,9 +125,11 @@ setp tdProgPaused.on-delay 2
 setp tdProgPaused.off-delay 0
 net prog_is_paused_delay <= tdProgPaused.out
 
+net machine-is-on => and_ena_green_button.in0
+net greenButton => and_ena_green_button.in1
 
-net greenButton => dm_green_button.sel-bit-00
-net mode_auto_mdi => dm_green_button.sel-bit-01
+net greenButton_ena => dm_green_button.sel-bit-00 <= and_ena_green_button.out
+net mode_auto => dm_green_button.sel-bit-01
 net mode_teleop => dm_green_button.sel-bit-02
 net prog_is_paused_delay => dm_green_button.sel-bit-03
 net prog_is_running => dm_green_button.sel-bit-04 <= halui.program.is-running
@@ -160,15 +159,25 @@ net home_all => halui.home-all <= dm_red_button.out-09 # 01001
 # setup leds
 #*******************************************************************
 setp siggen.0.frequency 1
-net flash => and_flash_home.in0 <= siggen.0.clock
-# green led
+net flash => and_flash_red.in0 and_flash_green.in0 <= siggen.0.clock
 
+# green led
+net start_prog_teleop => or_green_led.in-00 <= dm_green_button.out-04
+net start_prog_auto => or_green_led.in-01 <= dm_green_button.out-02
+net pause_prog_ena => and_flash_green.in1 <= dm_green_button.out-18
+net flash_pause_ena => or_green_led.in-02 <= and_flash_green.out
+net resume_prog_ena => or_green_led.in-03 <= dm_green_button.out-10
+
+net machine-is-on => and_ena_green_led.in0
+net greenLED_ena => and_ena_green_led.in1 <= or_green_led.or
+net greenLED <= and_ena_green_led.out
 
 # red led
-net home_all_ena => and_flash_home.in1 <= dm_red_button.out-08
-net flash_home_ena => or_red_led.in-00 <= and_flash_home.out
+net home_all_ena => and_flash_red.in1 <= dm_red_button.out-08
+net flash_home_ena => or_red_led.in-00 <= and_flash_red.out
 net touchOff_ena => or_red_led.in-01 <= dm_red_button.out-04
 net stop_prog_ena => or_red_led.in-02 <= dm_red_button.out-18 # 10010
+
 net machine-is-on => and_ena_red_led.in0
 net redLED_ena => and_ena_red_led.in1 <= or_red_led.or
 net redLED <= and_ena_red_led.out
