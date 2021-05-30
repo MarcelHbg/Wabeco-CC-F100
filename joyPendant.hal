@@ -26,9 +26,9 @@ setp halui.axis.jog-deadband 0.15
 # set offset for joystick inputs
 # result = 0 to +-1 
 # offset = analog value in mid position
-setp offset.0.offset 1
-setp offset.1.offset 1
-setp offset.2.offset 1
+setp offset.0.offset -1
+setp offset.1.offset 0.8
+setp offset.2.offset 0.8
 
 net analogInX => offset.0.fb-in
 net analogInY => offset.1.fb-in 
